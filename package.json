@@ -19,5 +19,9 @@
         "webpack": "^4.10.2",
         "webpack-command": "^0.2.0",
         "webpack-node-externals": "^1.7.2"
+    },
+    "dependencies": {
+        "inversify": "^4.13.0",
+        "reflect-metadata": "^0.1.12"
     }
 }
