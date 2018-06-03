@@ -1,0 +1,23 @@
+{
+    "name": "image-file-spoiler",
+    "version": "1.0.0",
+    "description":
+        "Publish spoiler messages for new image files on Slack, etc.",
+    "main": "",
+    "scripts": {
+        "build": "webpack"
+    },
+    "repository": "",
+    "author": "drowse314@gmail.com",
+    "license": "MIT",
+    "private": true,
+    "devDependencies": {
+        "@types/node": "^10.3.0",
+        "prettier": "^1.13.4",
+        "ts-loader": "^4.3.1",
+        "typescript": "^2.9.1",
+        "webpack": "^4.10.2",
+        "webpack-command": "^0.2.0",
+        "webpack-node-externals": "^1.7.2"
+    }
+}
