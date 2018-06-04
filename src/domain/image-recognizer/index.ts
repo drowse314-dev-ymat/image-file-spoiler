@@ -3,7 +3,7 @@
 import { ImageFileRef } from "../image-file";
 
 export interface ObjectLabelsInImage {
-    labelsWithConfidence: ReadonlyMap<string, number>;
+    labelsWithConfidence: { label: string; confidence: number }[];
 }
 
 export interface ImageRecognizer {

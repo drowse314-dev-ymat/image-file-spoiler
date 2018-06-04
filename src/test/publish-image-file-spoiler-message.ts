@@ -60,9 +60,12 @@ const invokeUsecase = (
 };
 
 test(">=90%のラベル1つを検知", t => {
-    const labels = new Map([["dog", 1.0]]);
+    const labels: [string, number][] = [["dog", 1.0]];
     const recognizerResult: ObjectLabelsInImage = {
-        labelsWithConfidence: labels as ReadonlyMap<string, number>
+        labelsWithConfidence: labels.map(([label, confidence]) => ({
+            label,
+            confidence
+        }))
     };
 
     return invokeUsecase(t.context.registry, recognizerResult).then(() => {
@@ -72,9 +75,16 @@ test(">=90%のラベル1つを検知", t => {
 });
 
 test(">=90%ラベルを複数検知", t => {
-    const labels = new Map([["dog", 0.93], ["cat", 0.91], ["bear", 0.8]]);
+    const labels: [string, number][] = [
+        ["dog", 0.93],
+        ["cat", 0.91],
+        ["bear", 0.8]
+    ];
     const recognizerResult: ObjectLabelsInImage = {
-        labelsWithConfidence: labels as ReadonlyMap<string, number>
+        labelsWithConfidence: labels.map(([label, confidence]) => ({
+            label,
+            confidence
+        }))
     };
 
     return invokeUsecase(t.context.registry, recognizerResult).then(() => {
@@ -87,14 +97,17 @@ test(">=90%ラベルを複数検知", t => {
 });
 
 test("[70, 90)%ラベルを複数検知", t => {
-    const labels = new Map([
+    const labels: [string, number][] = [
         ["dog", 0.89],
         ["cat", 0.71],
         ["bear", 0.6],
         ["rabbit", 0.3]
-    ]);
+    ];
     const recognizerResult: ObjectLabelsInImage = {
-        labelsWithConfidence: labels as ReadonlyMap<string, number>
+        labelsWithConfidence: labels.map(([label, confidence]) => ({
+            label,
+            confidence
+        }))
     };
 
     return invokeUsecase(t.context.registry, recognizerResult).then(() => {
@@ -107,14 +120,17 @@ test("[70, 90)%ラベルを複数検知", t => {
 });
 
 test("(50, 70)%ラベルを複数検知", t => {
-    const labels = new Map([
+    const labels: [string, number][] = [
         ["cat", 0.61],
         ["dog", 0.51],
         ["bear", 0.3],
         ["rabbit", 0.3]
-    ]);
+    ];
     const recognizerResult: ObjectLabelsInImage = {
-        labelsWithConfidence: labels as ReadonlyMap<string, number>
+        labelsWithConfidence: labels.map(([label, confidence]) => ({
+            label,
+            confidence
+        }))
     };
 
     return invokeUsecase(t.context.registry, recognizerResult).then(() => {
@@ -127,9 +143,16 @@ test("(50, 70)%ラベルを複数検知", t => {
 });
 
 test("<=50%ラベルのみ", t => {
-    const labels = new Map([["dog", 0.5], ["cat", 0.42], ["bear", 0.3]]);
+    const labels: [string, number][] = [
+        ["dog", 0.5],
+        ["cat", 0.42],
+        ["bear", 0.3]
+    ];
     const recognizerResult: ObjectLabelsInImage = {
-        labelsWithConfidence: labels as ReadonlyMap<string, number>
+        labelsWithConfidence: labels.map(([label, confidence]) => ({
+            label,
+            confidence
+        }))
     };
 
     return invokeUsecase(t.context.registry, recognizerResult).then(() => {
