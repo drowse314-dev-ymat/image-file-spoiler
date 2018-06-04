@@ -17,7 +17,7 @@ export class PublishImageFileSpoilerMessage {
         private imageFileSpoilerMessageSink: ImageFileSpoilerMessageSink
     ) {}
 
-    public invole(): Promise<void> {
+    public invoke(): Promise<void> {
         // fake reference
         this.newImageFileEventProvider;
         this.imageRecognizer;
