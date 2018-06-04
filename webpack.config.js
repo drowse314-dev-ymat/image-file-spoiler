@@ -5,7 +5,10 @@ module.exports = {
     target: "node",
     externals: [nodeExternals()],
     entry: {
-        dev: "./src/app/dev.ts"
+        dev: "./src/app/dev.ts",
+
+        "test/publish-image-file-spoiler-message":
+            "./src/test/publish-image-file-spoiler-message"
     },
     resolve: {
         extensions: [".ts"]

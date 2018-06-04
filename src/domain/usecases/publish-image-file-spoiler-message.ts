@@ -1,12 +1,13 @@
 "use strict";
 
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 
 import { ROLES } from "../roles";
 import { NewImageFileEventProvider } from "../image-file";
 import { ImageRecognizer } from "../image-recognizer";
 import { ImageFileSpoilerMessageSink } from "../image-file-spoiler-message";
 
+@injectable()
 export class PublishImageFileSpoilerMessage {
     public constructor(
         @inject(ROLES.NewImageFileEventProvider)
