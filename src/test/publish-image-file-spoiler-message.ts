@@ -59,7 +59,7 @@ const invokeUsecase = (
         .invoke();
 };
 
-test(">=90%のラベル1つを検知", t => {
+test("[90, 100]%のラベル1つを検知", t => {
     const labels: [string, number][] = [["dog", 1.0]];
     const recognizerResult: ObjectLabelsInImage = {
         labelsWithConfidence: labels.map(([label, confidence]) => ({
@@ -74,7 +74,7 @@ test(">=90%のラベル1つを検知", t => {
     });
 });
 
-test(">=90%ラベルを複数検知", t => {
+test("[90, 100]%ラベルを複数検知", t => {
     const labels: [string, number][] = [
         ["dog", 0.93],
         ["cat", 0.91],
@@ -142,7 +142,7 @@ test("(50, 70)%ラベルを複数検知", t => {
     });
 });
 
-test("<=50%ラベルのみ", t => {
+test("[0, 50]%ラベルのみ", t => {
     const labels: [string, number][] = [
         ["dog", 0.5],
         ["cat", 0.42],
