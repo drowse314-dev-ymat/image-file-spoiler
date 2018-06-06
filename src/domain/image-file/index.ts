@@ -1,4 +1,7 @@
 "use strict";
 
 export { ImageFileRef } from "./image-file-ref";
-export { NewImageFileEventProvider } from "./image-file-event";
+export {
+    NewImageFileEventProvider,
+    NewImageFileEvent
+} from "./image-file-event";
