@@ -49,61 +49,66 @@ export class PublishImageFileSpoilerMessage {
             ...objectLabelsInImage.labelsWithConfidence.map(kv => kv.confidence)
         );
 
-        const toStatementExpr = (predicates: string[]) =>
-            predicates.length === 0
-                ? "no_idea"
-                : predicates.length > 1
-                    ? `or(${predicates.join(", ")})`
-                    : predicates[0];
+        const spoilerMessageBuilder = this.getSpoilerMessageBuilder(
+            maxConfidence
+        );
 
-        if (maxConfidence >= 0.9) {
-            const pickups = _.sortBy(
-                objectLabelsInImage.labelsWithConfidence.filter(
-                    kv => kv.confidence >= 0.9
+        const pickupLabels = _
+            .sortBy(
+                objectLabelsInImage.labelsWithConfidence.filter(kv =>
+                    spoilerMessageBuilder.filterLabel(kv.confidence)
                 ),
                 kv => -1 * kv.confidence
-            );
-            return Promise.resolve({
-                formalExpr: toStatementExpr(
-                    pickups.map(kv => `certainly(${kv.label})`)
-                ),
-                message: `${pickups.map(kv => kv.label).join("か")}です！`
-            });
+            )
+            .map(kv => kv.label);
+
+        const message: ImageFileSpoilerMessage = {
+            formalExpr:
+                pickupLabels.length > 1
+                    ? `or(${spoilerMessageBuilder.formatFormalExpr(
+                          pickupLabels
+                      )})`
+                    : spoilerMessageBuilder.formatFormalExpr(pickupLabels),
+            message: spoilerMessageBuilder.formatMessage(pickupLabels)
+        };
+        return Promise.resolve(message);
+    }
+
+    private getSpoilerMessageBuilder(
+        maxConfidence: number
+    ): {
+        filterLabel: (confidence: number) => boolean;
+        formatFormalExpr: (labels: string[]) => string;
+        formatMessage: (labels: string[]) => string;
+    } {
+        if (maxConfidence >= 0.9) {
+            return {
+                filterLabel: c => c >= 0.9,
+                formatFormalExpr: labels =>
+                    labels.map(l => `certainly(${l})`).join(", "),
+                formatMessage: labels => `${labels.join("か")}です！`
+            };
         }
         if (maxConfidence >= 0.7) {
-            const pickups = _.sortBy(
-                objectLabelsInImage.labelsWithConfidence.filter(
-                    kv => kv.confidence >= 0.7
-                ),
-                kv => -1 * kv.confidence
-            );
-            return Promise.resolve({
-                formalExpr: toStatementExpr(
-                    pickups.map(kv => `probably(${kv.label})`)
-                ),
-                message: `${pickups
-                    .map(kv => kv.label)
-                    .join("か")}だと思われます。`
-            });
+            return {
+                filterLabel: c => c >= 0.7,
+                formatFormalExpr: labels =>
+                    labels.map(l => `probably(${l})`).join(", "),
+                formatMessage: labels => `${labels.join("か")}だと思われます。`
+            };
         }
         if (maxConfidence > 0.5) {
-            const pickups = _.sortBy(
-                objectLabelsInImage.labelsWithConfidence.filter(
-                    kv => kv.confidence > 0.5
-                ),
-                kv => -1 * kv.confidence
-            );
-            return Promise.resolve({
-                formalExpr: toStatementExpr(
-                    pickups.map(kv => `possibly(${kv.label})`)
-                ),
-                message: `${pickups.map(kv => kv.label).join("か")}...？`
-            });
+            return {
+                filterLabel: c => c > 0.5,
+                formatFormalExpr: labels =>
+                    labels.map(l => `possibly(${l})`).join(", "),
+                formatMessage: labels => `${labels.join("か")}...？`
+            };
         }
-
-        return Promise.resolve({
-            formalExpr: toStatementExpr([]),
-            message: "わかりません.."
-        });
+        return {
+            filterLabel: _c => false,
+            formatFormalExpr: _ls => "no_idea",
+            formatMessage: _ls => "わかりません.."
+        };
     }
 }
