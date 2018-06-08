@@ -26,17 +26,29 @@ export class PublishImageFileSpoilerMessage {
         return this.newImageFileEventProvider
             .get()
             .then(newImageFileEvent =>
-                newImageFileEvent
-                    .getImageFileRef()
-                    .then(imageFileRef =>
-                        this.imageRecognizer.findObjects(imageFileRef)
-                    )
-                    .then(objectLabelsInImage =>
-                        this.composeImageFileSpoilerMessage(
-                            newImageFileEvent,
-                            objectLabelsInImage
-                        )
-                    )
+                this.handleNewImageFileEvent(newImageFileEvent)
+            );
+    }
+
+    public serve(): void {
+        this.newImageFileEventProvider.subscribe(newImageFileEvent =>
+            this.handleNewImageFileEvent(newImageFileEvent)
+        );
+    }
+
+    private handleNewImageFileEvent(
+        newImageFileEvent: NewImageFileEvent
+    ): Promise<void> {
+        return newImageFileEvent
+            .getImageFileRef()
+            .then(imageFileRef =>
+                this.imageRecognizer.findObjects(imageFileRef)
+            )
+            .then(objectLabelsInImage =>
+                this.composeImageFileSpoilerMessage(
+                    newImageFileEvent,
+                    objectLabelsInImage
+                )
             )
             .then(message => this.imageFileSpoilerMessageSink.publish(message));
     }

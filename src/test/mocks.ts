@@ -17,7 +17,10 @@ export const createNewImageFileEventProviderMock = (
     event: NewImageFileEvent
 ): NewImageFileEventProvider => {
     return {
-        get: () => Promise.resolve(event)
+        get: () => Promise.resolve(event),
+        subscribe: _ev => {
+            throw new Error("not implemented!");
+        }
     };
 };
 
