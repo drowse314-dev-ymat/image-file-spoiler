@@ -6,6 +6,7 @@ module.exports = {
     externals: [nodeExternals()],
     entry: {
         dev: "./src/app/dev.ts",
+        "image-file-spoiler": "./src/app/image-file-spoiler.ts",
 
         "test/publish-image-file-spoiler-message":
             "./src/test/publish-image-file-spoiler-message"
