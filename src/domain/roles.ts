@@ -7,5 +7,9 @@ export const ROLES = {
     // domain roles
     NewImageFileEventProvider: Symbol("NewImageFileEventProvider"),
     ImageRecognizer: Symbol("ImageRecognizer"),
-    ImageFileSpoilerMessageSink: Symbol("ImageFileSpoilerMessageSink")
+    ImageFileSpoilerMessageSink: Symbol("ImageFileSpoilerMessageSink"),
+
+    // utilities
+    RuntimeConfigProvider: Symbol("RuntimeConfigProvider"),
+    Logger: Symbol("Logger")
 };

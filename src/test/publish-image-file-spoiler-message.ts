@@ -17,10 +17,14 @@ import {
     ImageFileSpoilerMessageSink,
     ImageFileSpoilerMessage
 } from "../domain/image-file-spoiler-message";
+import { Logger } from "../domain/logger";
 import { PublishImageFileSpoilerMessage } from "../domain/usecases/publish-image-file-spoiler-message";
 
 const test = testWithContext(() => {
     const registry = buildServiceRegistry();
+
+    registry.unbind(ROLES.ImageRecognizer);
+    registry.unbind(ROLES.Logger);
 
     const messagesSent: ImageFileSpoilerMessage[] = [];
     registry
@@ -40,6 +44,10 @@ const test = testWithContext(() => {
                     })
             })
         );
+    // テストでは不要
+    registry
+        .bind<Logger>(ROLES.Logger)
+        .toConstantValue({ log: (_domain, _content) => {} });
 
     return { registry, messagesSent };
 });

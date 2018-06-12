@@ -10,6 +10,7 @@ import {
     ImageFileSpoilerMessageSink,
     ImageFileSpoilerMessage
 } from "../image-file-spoiler-message";
+import { Logger } from "../logger";
 
 @injectable()
 export class PublishImageFileSpoilerMessage {
@@ -19,32 +20,65 @@ export class PublishImageFileSpoilerMessage {
         @inject(ROLES.ImageRecognizer) //
         private imageRecognizer: ImageRecognizer,
         @inject(ROLES.ImageFileSpoilerMessageSink)
-        private imageFileSpoilerMessageSink: ImageFileSpoilerMessageSink
+        private imageFileSpoilerMessageSink: ImageFileSpoilerMessageSink,
+        @inject(ROLES.Logger) //
+        private logger: Logger
     ) {}
 
     public invoke(): Promise<void> {
         return this.newImageFileEventProvider
             .get()
             .then(newImageFileEvent =>
-                newImageFileEvent
-                    .getImageFileRef()
-                    .then(imageFileRef =>
-                        this.imageRecognizer.findObjects(imageFileRef)
-                    )
-                    .then(objectLabelsInImage =>
-                        this.composeImageFileSpoilerMessage(
-                            newImageFileEvent,
-                            objectLabelsInImage
-                        )
-                    )
+                this.handleNewImageFileEvent(newImageFileEvent)
+            );
+    }
+
+    public serve(): void {
+        this.newImageFileEventProvider.subscribe(newImageFileEvent =>
+            this.handleNewImageFileEvent(newImageFileEvent)
+        );
+    }
+
+    private handleNewImageFileEvent(
+        newImageFileEvent: NewImageFileEvent
+    ): Promise<void> {
+        this.logger.log(
+            "PublishImageFileSpoilerMessage",
+            newImageFileEvent,
+            "handle new image file event requested"
+        );
+
+        return newImageFileEvent
+            .getImageFileRef()
+            .then(imageFileRef =>
+                this.imageRecognizer.findObjects(imageFileRef)
             )
-            .then(message => this.imageFileSpoilerMessageSink.publish(message));
+            .then(objectLabelsInImage =>
+                this.composeImageFileSpoilerMessage(
+                    newImageFileEvent,
+                    objectLabelsInImage
+                )
+            )
+            .then(message => {
+                this.logger.log(
+                    "PublishImageFileSpoilerMessage",
+                    message,
+                    "publish spoiler message requested"
+                );
+                return this.imageFileSpoilerMessageSink.publish(message);
+            });
     }
 
     private composeImageFileSpoilerMessage(
         _newImageFileEvent: NewImageFileEvent,
         objectLabelsInImage: ObjectLabelsInImage
     ): Promise<ImageFileSpoilerMessage> {
+        this.logger.log(
+            "PublishImageFileSpoilerMessage",
+            objectLabelsInImage,
+            "compose spoiler message from detected labels"
+        );
+
         const maxConfidence = Math.max(
             ...objectLabelsInImage.labelsWithConfidence.map(kv => kv.confidence)
         );

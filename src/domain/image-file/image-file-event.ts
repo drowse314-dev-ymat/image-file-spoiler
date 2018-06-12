@@ -11,4 +11,5 @@ export interface NewImageFileEvent {
 
 export interface NewImageFileEventProvider {
     get(): Promise<NewImageFileEvent>;
+    subscribe(fn: (ev: NewImageFileEvent) => Promise<void>): this;
 }
