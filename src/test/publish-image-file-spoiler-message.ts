@@ -23,9 +23,6 @@ import { PublishImageFileSpoilerMessage } from "../domain/usecases/publish-image
 const test = testWithContext(() => {
     const registry = buildServiceRegistry();
 
-    registry.unbind(ROLES.ImageRecognizer);
-    registry.unbind(ROLES.Logger);
-
     const messagesSent: ImageFileSpoilerMessage[] = [];
     registry
         .bind<ImageFileSpoilerMessageSink>(ROLES.ImageFileSpoilerMessageSink)
@@ -46,7 +43,7 @@ const test = testWithContext(() => {
         );
     // テストでは不要
     registry
-        .bind<Logger>(ROLES.Logger)
+        .rebind<Logger>(ROLES.Logger)
         .toConstantValue({ log: (_domain, _content) => {} });
 
     return { registry, messagesSent };
@@ -57,7 +54,7 @@ const invokeUsecase = (
     recognizerResult: ObjectLabelsInImage
 ): Promise<void> => {
     registry
-        .bind<ImageRecognizer>(ROLES.ImageRecognizer)
+        .rebind<ImageRecognizer>(ROLES.ImageRecognizer)
         .toConstantValue(mocks.createImageRecognizerMock(recognizerResult));
 
     return registry
