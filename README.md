@@ -24,3 +24,11 @@ $ yarn run build
 ```sh
 $ node ./dist/image-file-spoiler.js
 ```
+
+## Package/Deploy
+
+### Package AWS Lambda App
+
+```sh
+$ make
+```
