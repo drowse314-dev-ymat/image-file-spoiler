@@ -9,6 +9,7 @@ import {
 } from "../../domain/runtime-config";
 
 const ENV_KEY_AWS_PROFILE = "AWS_PROFILE";
+const ENV_KEY_SLACK_API_TOKEN = "SLACK_API_TOKEN";
 const DEFAULTS = {
     aws: {
         credentials: process.env[ENV_KEY_AWS_PROFILE]
@@ -16,7 +17,13 @@ const DEFAULTS = {
                   profile: process.env[ENV_KEY_AWS_PROFILE]
               })
             : new AWS.EnvironmentCredentials("AWS"),
-        region: "ap-northeast-1,"
+        region: "ap-northeast-1"
+    },
+
+    slack: {
+        apiToken: process.env[ENV_KEY_SLACK_API_TOKEN]
+            ? <string>process.env[ENV_KEY_SLACK_API_TOKEN]
+            : ""
     }
 };
 
@@ -27,7 +34,8 @@ export class EnvironmentRuntimeConfigProvider implements RuntimeConfigProvider {
     public get() {
         if (this.cache === undefined) {
             this.cache = {
-                aws: DEFAULTS.aws
+                aws: DEFAULTS.aws,
+                slack: DEFAULTS.slack
             };
         }
 

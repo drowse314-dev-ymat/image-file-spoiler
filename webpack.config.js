@@ -7,6 +7,7 @@ module.exports = {
     entry: {
         dev: "./src/app/dev.ts",
         "image-file-spoiler": "./src/app/image-file-spoiler.ts",
+        "lambda-image-file-spoiler": "./src/app/lambda-image-file-spoiler.ts",
 
         "test/publish-image-file-spoiler-message":
             "./src/test/publish-image-file-spoiler-message"
@@ -19,6 +20,7 @@ module.exports = {
     },
     output: {
         path: __dirname + "/dist",
-        filename: "[name].js"
+        filename: "[name].js",
+        libraryTarget: "commonjs2"
     }
 };

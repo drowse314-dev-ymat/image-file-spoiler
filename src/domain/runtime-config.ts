@@ -7,6 +7,10 @@ export interface RuntimeConfig {
         region: string;
         credentials: AWS.Credentials;
     };
+
+    slack: {
+        apiToken: string;
+    }
 }
 
 export interface RuntimeConfigProvider {
