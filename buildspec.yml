@@ -1,0 +1,11 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - make
+artifacts:
+  files:
+    - lambda-image-file-spoiler.zip
+  discard-paths: yes
+  base-directory: dist/package
