@@ -12,7 +12,9 @@
     "license": "MIT",
     "private": true,
     "devDependencies": {
+        "@types/aws-lambda": "^8.10.6",
         "@types/lodash": "^4.14.109",
+        "@types/mime": "^2.0.0",
         "@types/node": "^10.3.0",
         "ava": "^0.25.0",
         "prettier": "^1.13.4",
@@ -23,9 +25,11 @@
         "webpack-node-externals": "^1.7.2"
     },
     "dependencies": {
+        "@slack/client": "^4.3.1",
         "aws-sdk": "^2.252.1",
         "inversify": "^4.13.0",
         "lodash": "^4.17.10",
+        "mime": "^2.3.1",
         "reflect-metadata": "^0.1.12"
     }
 }
