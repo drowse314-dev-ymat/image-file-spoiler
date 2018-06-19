@@ -1,4 +1,10 @@
-- WIP
+- Work in progress...
+
+オニオンアーキテクチャの実験のために書かれたアプリケーション。
+
+ネットワーク環境の悪い人向けに(?)、Slackに添付された画像の内容をすかさずコメントするBot。
+
+として使えるAWS Lambda関数の実装。
 
 Image File Spoiler
 ==================
@@ -23,12 +29,14 @@ $ yarn run build
 
 ```sh
 $ node ./dist/image-file-spoiler.js
+$ # input local image paths...
 ```
 
-## Package/Deploy
+## Package
 
 ### Package AWS Lambda App
 
 ```sh
 $ make
+$ # --> ./dist/package/lambda-image-file-spoiler.zip
 ```
