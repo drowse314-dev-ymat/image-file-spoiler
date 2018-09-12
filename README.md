@@ -1,10 +1,10 @@
-- Work in progress...
-
 オニオンアーキテクチャの実験のために書かれたアプリケーション。
 
 ネットワーク環境の悪い人向けに(?)、Slackに添付された画像の内容をすかさずコメントするBot。
 
 として使えるAWS Lambda関数の実装。
+
+- http://ymat.hatenablog.com/entry/step-by-step-onion-architecture
 
 Image File Spoiler
 ==================
